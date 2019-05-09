@@ -1,0 +1,307 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gutenberg!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+        <cover>
+            <para>
+                Programozás tankönyvek rövid olvasónaplói.
+            </para>
+        </cover>
+    </info>
+    <seciton>
+        <title>Pár alapvető információ...</title>
+        <para>
+            1.
+
+Az ember folyton modellekben gondolkodik, főleg problémák megoldása esetében.
+Ezt rávetíthetjük a programozásra is, hisz itt is folyton problémákkal kell szembenéznünk, melyek megoldását nagyban elősegíti egy előre felállított modell, működési elv.
+
+A számítógép processzora egy előre meghatározott nyelvet "ismer", viszont több magas szintű programozási nyelv létezik, ezért az ezen nyelveken írt programokat le kell fordítanunk, erre szolgálnak segítségül a fordító porgramok (gcc, g++ ...stb.)
+Ezek a fordítóporgramok lexerrel avagy lexikális elemlzővel felszereltek, melyek a lefordítandó programkódot hivatottak ellenőrizni.
+Illetve a fellépő hibákat (legyen az szintaktikai, vagy más egyéb) a felhasználó/programozó felé jelezni.
+
+A programnyelveket osztályokba sorolhatjuk , miszerint léteznek :
+
+ - Imperatív nyelvek : algoritmikus nyelv, utasítások sorozata
+ - Deklaratív nyelvek: pl.: logikai nyelvek
+ - Más nyelvek	     : ide azokat soroljuk, melyek egy imperatív tényezőt/tulajdonságot tagadnak
+
+2.
+Minden programkód, karakterekből áll elő, ezek egy adott karakterkészletből érhetőek el, minden nyelv definiálja a sajátját. (betűk , számjegyek, stb..)
+Ily módon épülnek fel a lexikális -, a szintaktikai -, a program -, a fordítási egységek, az utasítások, illetve maga a program.
+A programkódon belüli lexikális egységek, melyeket a fordítóprogram tokenizál a következőek : Többkarakteres szimbólum, szimbolikus név, címke, megjegyzés, literál.
+
+A szimbolikus neveken belül találkozhatunk az azonosítóval, melynek kötelezően betűvel kell kezdődnie, majd betűvel vagy számmal folytatódnia.
+Programozói eszközök megnevezésére szolgál, majd a későbbiekben az ezekre való hivatkozást is megkönnyíti.
+Találkozhatunk még a programnyelvekben kulcsszavakkal, melyeknek az adott nyelv tulajdonít jelentést, tehát azonosítói szempontból kötöttek.
+Általában utasítások elnevezései.
+Léteznek még standard azonosítók, melyeknek szintén az adott programnyelv tualjdonít jelentést a kulcsszavakhoz hasonló módon, ezt a programozó átnevezheti, átértelmezheti (C-ben ilyen például a NULL).
+
+
+A programkódok egy hasznos egységét képezik a megjegyzések, kommentek.
+Ezek segítik a programozónak egy adott szegmens műkődési elvének leírását, ha esetleg hosszabb a kód és a későbbiekben vissza kell térni rá, de már a programozó nem teljesen emlékszik rá.
+Problémák feljegyzése adott szegmensekkel kapcsolatban.
+A kommentek szinte bármilyen nagyságúak lehetnek, nem befolyásolják a program működését.
+            
+        </para>
+        
+    </seciton>
+    <section>
+        <title>Eljárás orientáltság</title>
+        <para>
+            
+            Az eljárásorientált programnyelvekben a szöveg többé-kevésbé szuverén, így tagolható, úgynevezett programegységekre.
+
+Bizonyos nyelvekben a program fizikailag önálló részekből áll, így ezen programrészeket külön fordítjuk.
+Ezzel szemben más nyelvekben a programot egy egységként kell kezelni, fordítani, így annak szövege mélységben struktúrálható(fizikailag nem független részek).
+Illetve létezik a fent említett két variáció keveréke is, ahol a programrészek fizikailag függetlenek, ám tetszőlegesen struktúrálhatók.
+
+Az eljárásorientált nyelvekbe négy programegységet sorolunk, melyek az alprogram, a blokk, a csomag, és a task.
+
+Az alprogram:
+	Bemeneti adatcsoportot képez le egy kimeneti adatcsoportra.
+	Az újrafelhasználás eszköze. Egy programban többször előforduló alprogramot elég egyszer megírnunk, s a későbbiek folyamán csak hivatkozni arra,
+	figyeljünk arra is, hogy ne legyen feladatspecifikus, azaz egy általánosabb, univerzálisabb formát adjunk neki, hogy a későbbiek folyamán egy-egy paraméter segítségével az adott feladat megoldására tudjuk azt formálni.
+	Az itt deklarált programozási eszközök az alprogram lokális eszközei, ezzel szemben az alprogramon kívül deklarált, de abban felhasznált eszközök a programunk globális eszközei.
+	
+
+
+Egy programegység, szegmens, meghívhat másik programegységet, majd az is meghívhat egy másikat, s így tovább.
+Ez a jelenség a hívási lánc, melynek első tagja mindig a főprogram. A hívási lánc minden tagja aktív, de a legutoljára meghívott programrész fejezi be először a működést, ezt követően, a vezérlés az őt meghívó programrészhez kerül.
+Rekurziónak nevezzük azt a jelenséget, amikor egy aktív alprogramot hívunk meg.
+A rekurziónak két fajtája létezik a közvetlen és a közvetett.
+A közvetlen rekurzió esetében az alprogram önmagát hívja meg.
+A közvetett rekutzió esetében pedig egy a hívási láncban már egy korábban szereplő programot hívunk meg.
+
+        </para>
+    </section>
+    <section>
+        <title>A blokk</title>
+        <para>         
+               A blokk olyan programegység amely csak és kizárólag egy másik programegység belsejében helyezkedhet el.
+Fõ szerepe a nevek hatáskörének elhatárolása.
+A blokkot három szegmensre oszthatjuk, ez a blokk kezdete, törzse és vége.
+A blokk kezdetét és végét egy alapszó vagy egy speciális karaktersorozat jelzi, ezen felül a törzsben lehetnek
+deklarációs és végrehajtandó utasítások.
+GOTO utasításokkal tudjuk a vezérlést a blokkba irányítani, valamint hasonló módon kilépni az adott blokkból. 
+        </para>
+    </section>        
+    <section>
+        <title>Adattípusok</title>
+        <para>                
+           Az adattípusok absztrakt programozási eszközök.
+Mindig az adott porgram komponenseként jelenik meg, az ilyen adattípusok névvel ellátottak, melyeket azonosítonak nevezünk.
+A programozási nyelvek egy része ismeri ezt az eszközt, a másik része nem, így beszélhetünk típusos és nem típusos nyelvekrõl.
+(Az eljárásorientált nyelvek típusosak.)
+
+Egy adattípust három tulajdonság határoz meg:
+
+ -tartomány
+	azon elemeket tartalmazza, amelyeket az adott típusú programozási eszköz felvehet értékként
+	
+	
+ -mûveletek
+	ide azok a mûveletek sorolhatóak, melyeket az adott tartomány elemein végre tudunk hajtani
+
+ -reprezentáció 
+	az egyes típusok a tárban való megjelenéséért felelõs (bitkombinációk..stb.)
+	
+
+Az adattípusokat két csoportra oszthatjuk :
+
+ -skalár
+	atomi értékeket nem artalmaz, minden értéke egyedi és közvetlenül nyelvi eszközökkel tovább nem bontható
+
+ -strukturált 
+	elemei maguk is típussal rendelkeznek, az elemek egy-egy értékcsoportot képviselnek, az adott értékcsoport elemeihez külön-külön is hozzáférhetünk
+
+
+
+<para>
+
+A nevesített konstans
+
+~: Egy három komponensbõl álló programozási eszköz (ezek a komponensek a : név, típus, érték), mindig deklarálni kell!
+Mindig névvel jelenik meg és mindig az értékkomponenst jelenti.
+Beszédes névvel ellátva, könnyebb a szerepköri azonosítása a kód írójának, valamint egy változtatás során elég a deklarációban más értéket adni a konstansnak, így nem kell annak valamennyi elõfordulását manuálisan egyenként átírni.
+</para>
+<para>
+A változó
+
+~: Egy négy komponensbõl álló programozási eszköz (név, attribútumok, cím, érték).
+
+ -név : egy azonosító, mellyel a változó a programkódban megjelenik, azonban bármely komponenst jelentheti.
+ -attribútumok : a változó futás közbeni viselkedését határozzák meg
+ -cím : egy változóhoz a következõ módokon rendelhetõ cím : 
+		-Statikus tárkiosztás : a futás elõtt eldõl a változó címe , ez a futás alatt nem változik.
+		-Dinamikus tárkiosztás : a futtató rendszer végzi, a változóhoz akkor rendel címkomponenst, ha az adott program szegmens aktivizálódik (lokális változó), majd a címkomponens megszûnik  ha az adott programegység befejezte mûködését.
+		-A programozó által vezérelt tárkiosztás : A változóhoz a programozó rendel címkomponenst futási idõben. A címkomponens változhat, illetve az is lehetséges, hogy egy adott idõintervallumban nincs címkomponens.
+	
+</para>
+
+        </para>
+       
+            
+               
+    </section>        
+    <section>
+        <title>I/O</title>
+        <para>                
+         A programnyelvek ebben a szegmensben/témában térnek el legjobban.
+Sok programnyelv nem is tartalmazza az I/O elemeket, hanem teljesen az implementációra
+bízzák ezt.
+Eme szegmens a perifériákkal történõ kommunikációért felel, s az operatív tárba küld, 
+vagy éppen onnan vár adtatokat.
+Az I/O középpontjában az "állományt" találhatjuk.
+Az imént említett állománynak két fajtáját különítjük el, ez a logikai- és a fizikai állomány.
+A logikai állomány egy programozási eszköz, melynek állományjellemzõi attribútumként jelennek meg.
+Ezzel szemben a fizikai állomány esetében a konkrét perifériákon megjelenõ adatot tartalmazó állomány.
+
+Egy állomány funkció szerint besorolható az alábbiakba:
+
+-input állomány : a feldolgozást megelõzõen léteznie kell, a feldolgozás során nem módosul, valamint belõle csak olvasni lehet
+
+-output állomány : a feldolgozási folyamat hozza létre (tehát elõtte nem létezett), csak írni lehet bele
+
+-input - output állomány : általában létezik feldolgozás elõtt is, ám az megváltoztatja tartalmát, írható és olvasható is
+
+
+Az I/O során adatok mozognak a perifériák és a tár között, mindkét esetben valamilyen ábrázolási mód szerint jelennek meg.
+Ebbõl kiindulva a konverzió kérdése áll fent, melynek megfelelõen kétféle adatátviteli mód létezik.
+Az egyik ilyen mód a folyamatos adatátvitel, ebben az esetben jelen van a konverzió, ezzel szemben a második -bináris- adatátviteli mód
+esetén nincs konverzió.
+Folyamatos adatátvitel esetén a perifériákon megjelenõ adatot karakterláncoknak tekintjük, majd az ezen típusnak megfelelõ bitsorozat kerül a tárba.
+Valamint kérdéses az is, hogy az egyes egybefüggõ karakterláncokat hány karakterként megjelenõ lánc reprezentálja?
+Ennek meghatározására három mód áll rendelkezésre:
+
+-formátumos módú : minden egyedi adathoz explicit módon kell megadnunk a karakterek darabszámát, illetve típusát
+
+-szerkesztett módú : minden egyedi adathoz tartozik egy maszk (amit szintén nekünk kell megadnunk), ez a maszk egy szerkesztõ és egy átvitendõ karakterszegmensbõl áll,
+ebben az esetben a maszk elemai mutatják a kezelendõ karakterek számát, illetve a szerkesztõ karakterek megadják az adott pozícióban lévõ karakterek típusát.
+
+-listázott módú : a karaktersorozatban benne vannak a tördelésért felelõs egységek, így nincs szükség explicit megadásra
+
+Ha a programunkban állomyánokkal szeretnénk dolgozni, akkor egy öt lépcsõs folyamatot kell végigjárnunk:
+
+
+1.) Deklaráció : A logikai állomány deklarációja elengedhetetlen (a nyelv elemei segítségével)
+2.) Összerendelés : mely során a deklarált logikai állományunkhoz fizikai állományt rendelünk
+3.) Állomány megnyitása : Egyértelmûen az adott állományunkkal csak akkor tudjuk a munkát megkezdeni, ha az meg van nyitva
+			  megnyitás elõtt azonban az operációs rendszer protokollok segítségével megvizsgálja, hogy az adott logikai állomány megegyezik-e a hozzárendelt fizikai állománnyal(paraméterek, attribútumok)
+
+4.) Feldolgozás : Megnyitást követõen az állományunkból írhatunk vagy olvashatunk
+5.) Lezárás : Ez a 3-as ponthoz hasonlóan operációs rendszerbeli protokollokat indít el, könyvtárak aktualizálására kerül sor, valamint az állományok fizikai-, illetve logikai részei közti kapcsolat megszüntetése, valamint az állományok bezárása is ekkor történik.
+        </para>
+    </section>  
+    <section>
+        <title>OO</title>
+        <para>
+            Az objektum orientáltság alapelve a bonyolult programozási feladatok átláthatóbb megoldása.
+Egy hosszabb projekt során többször is elõfordul hogy kiegészítjük a programkódunkat, esetleg valamit
+módosítunk rajta stb...
+Az idõ teltével és a kód elõrehaladtával egyre bonyolultabb , átláthatatlanabb lesz a programozó számára,
+ennek kiküszöbölésére jött létre az objektum orientáltság, ahol a hasonló attribútumokkal, tulajdonságokkal rendelkezõ
+"objektumokat" egy osztályba rendezzük, ezt nevezzük "encapsulation"-nek.
+Az objektumokon belül lehetõség van adatelrejtésre, kritikusabb pontoknál, ahol egy apró módosítás képes teljes káoszt okozni,
+valamint lehetõség van "behelyettesítésre" is. Ehhez vegyük a rovar és a bogár példát. Minden bogár rovar, tehát a bogár esetében a rovar
+jellemzõit, objektumait, attribútumait behelyettesíthetjük a bogár osztályba, mivel az a rovarok osztályának egy specializációja.
+
+A C++ programnyelvben találkozunk a típustámogatás fogalmával, miszerint a felhasználó által definiált típusok (pl.: osztályok) úgy viselkednek, mint a programnyelbe 
+beépített típusok, tehát például támogathatnak operátorokat, illetve típuskonverziót.
+
+Az objektum orientált porgramozásban az osztályok(Classok) esetében fontos szerepet játszanak a konstruktorok illetve a destruktorok.
+A konstruktor a program futásakor lép életbe, a memóriában helyet foglal az objektumoknak, a program futása után hívódik a destruktor, amely 
+általában a "delete" kulcsszóval jelenik meg, felszabadítja az adott objektumoknak lefoglalt memóriaterületet.
+        </para>
+    </section>  
+    <section>
+        <title>Kivételkezelés </title>
+        
+        <para>
+           A program futása során elõfordulhatnak hibás/kivételes esetek.
+A C nyelvben ezen esetekkel való "elbánás" függvények által visszaadott hibakódokkal történik.
+Mindaddig C++ -ban úgynevezett "exception"-öket írhat a programozó, jobban strukturálható, alakítható, mint a C nyelv esetében.
+Az így keletkezett kivételeink megoldását, szintaktikáját teljesen a problémára szabhatjuk.
+
+A kivételkezelés olyan mechanizmus, mely során a program futása kivétel észlelése esetében egybõl az exception handling "szegmensbe" irányul a futás.
+
+Példaként vegyünk egy reciprok visszaadó programot. (190.o.)
+A program bekér egy double típusú számot (a double miatt akár tizedes törtet is megadhatunk)
+majd a kimenetre ennek a számnak a reciproka kerül.
+A kivétel kezelés ebben az esetben a '0' számjegy beírása során lép érvénybe.
+A "throw" kulcsszóval átirányítjuk a kivételt a catch ágba, ahol egy error üzenettel adjuk a felhasználó tudtára a hibás bemenet megadását.
+
+A verem visszacsévélése azaz (stack rewind) olyan eset, mely során egy alsóbb blokkban eldobott kivétel 1-2, vagy akár 3 réteggel "fentebb" található catch blokkban kerül kiértékelésre.
+Ebben az esetben az adott kivétel áthalad a fentebb találhaó blokkokon, így azoknak lokális változói érvényüket vesztik, valamint az osztályok destruktorai is meghívódnak.
+Érdemes elõvigyázatosnak lenni, ilyen esetben nem célszerû egynél több kivételt dobni, ugyan is ekkor a program terminálására kerül sor, így az azonnal leáll.
+(pl.: 197.o "f2 kivételt dob, az i lokális változója felszabadul, a fifo fifo objektum destruktora hívódik, majd a mainben bekerül az exception a catch blokkba") 
+        </para>
+        
+    </section>
+    <section>
+        <title>Utasítások</title>
+        <para>
+            Az eljárásorientált nyelvekben megírt programok olyan egységeit alkotják, amelyekkel egyrészt megadjuk az algoritmus lépéseit
+másrészt a fordítóprogram ezek segítségével generálja a tárgyprogramot.
+Két nagy csoportjuk van a deklarációs, és a végrehajtható utasítások.
+(A deklarációs utasítások mögött nem áll tárgykód, telj mértékben a fordítóprogramnak szólnak)
+(A végrehajtható utasításokból generálja a fordítóprogram a tárgykódot.)
+
+A végrehajtható utasításokat az alábbi csoportokba sorolhatjuk:
+1. Értékadó utasítás
+2. Üres utasítás
+3. Ugró utasítás
+4. Elágaztató utasítások
+5. Ciklusszervező utasítások
+6. Hívó utasítás
+7. Vezérlésátadó utasítások
+8. I/O utasítások
+9. Egyéb utasítások 
+
+Értékadó utasítás : 
+
+Feladata beállítani vagy módosítani egy változó értékkomponensét a program
+futásának bármely pillanatában.
+
+Üres utasítás : 
+Az üres utasítás hatására a processzor egy üres gépi utasítást hajt végre. 
+
+Ugró utasítás :
+Segítségével a program egy adott pontjáról egy adott címkével ellátott végrehajtható utasításra ugrik a vezérlés.
+
+Elágaztató utasítás :
+Lehetővé teszi hogy a program egy adott pontján két vagy több tevékenység közül válasszunk, vagy pedig egy utasítást hajtsunk-e végre avagy sem.(pl.: if, else if, else)
+
+Ciklusszervező utasítások : 
+A program egy pontján egy tevékenység többszöri ismétlése. (pl.: for, while)
+
+Vezérlés átadó utasítások (C):
+
+-break : befejezteti a ciklust, kilép az elágaztató utasításból
+
+-continue : nem hajtja végre a ciklus magjának hátralévő utasításait, hanem az ismétlés feltételeit   		vizsgálja
+
+-return(kifejezés) : függvény szabályos befejezése, majd a a vezérlést a hívónak adja vissza
+
+        </para>
+    </section>
+    <section>
+        <title>Operátorok és túlterhelésük</title>
+        <para>
+            A C programnyelvben az operátorok az argumentumaikon végeznek mûveleteket.
+A mûvelet eredményei a visszatérési értékei feldolgozásával használhatóak.
+Valamint némelyik operátor megváltoztatja argumentumának értékét.(pl.: ++, --)
+Az operátorok kiértékelésének sorrendjét egy megadott szabályrendszer foglalja magába,
+de természetesen zárójelek használatával mi is befolyásolhatjuk az operátorok kiértékelési
+sorrendjét.
+
+Az operátor túlterhelés gyakorlatilag egy adott operátor (pl.: +) egy osztályon belüli (pl.:complex)
+alkalmazása.
+
+
+
+        </para>
+    </section>
+</chapter>      
